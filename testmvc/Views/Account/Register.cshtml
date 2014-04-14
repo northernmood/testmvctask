@@ -1,0 +1,18 @@
+﻿@model testmvc.Models.RegisterUserViewModel
+
+<div>
+    @if(Model.DataBaseIsEmpty)
+    {
+        <div>@Strings.NoUsersInfo</div>
+    }
+    @using(@Html.BeginForm("register", "account", new AjaxOptions(){HttpMethod = "POST"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.LabelFor(x => x.LoginName) @Html.TextBoxFor(m => m.LoginName) @Html.ValidationMessageFor(x => x.LoginName) <br/>
+        @Html.LabelFor(x => x.Email) @Html.TextBoxFor(x => x.Email) @Html.ValidationMessageFor(x => x.Email) <br/>
+        @Html.LabelFor(x => x.Password) @Html.PasswordFor(x => x.Password) @Html.ValidationMessageFor((x => x.Password)) <br/>
+        @Html.LabelFor(x => x.PasswordConfirmation) @Html.PasswordFor(x => x.PasswordConfirmation) @Html.ValidationMessageFor(x => x.PasswordConfirmation) <br/>
+        @Html.HiddenFor(x => x.DataBaseIsEmpty)
+        <input type="submit" value="@Strings.Register" /> <text>|</text> @Html.ActionLink(@Strings.LogIn, "login", "account")
+    }
+</div>

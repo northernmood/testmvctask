@@ -1,0 +1,42 @@
+﻿@model testmvc.Models.UsersListViewModel
+
+@{
+    ViewBag.Title = "Index_";
+}
+
+<table border="1">
+    <tr>
+        <td>
+            @Strings.FirstName
+        </td>
+        <td>
+            @Strings.LastName
+        </td>
+        <td>
+            Email
+        </td>
+        <td>
+
+        </td>
+    </tr>
+@foreach(UserModel u in Model.Users)
+{
+    <tr>
+        <td>
+            @u.FirstName
+        </td>
+        <td>
+            @u.LastName
+        </td>
+        <td>
+            @u.Email
+        </td>
+        <td>
+            @if(ViewBag.CurrentUserIsAdmin)
+            {
+                @Html.ActionLink(Strings.Edit, "manage", "account", new {id = u.UserId}, null)
+            }
+        </td>
+    </tr>
+}
+</table>

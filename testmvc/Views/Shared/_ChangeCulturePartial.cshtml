@@ -1,0 +1,22 @@
+﻿<script>
+     function SendCulture(culture)
+     {
+         document.getElementById('_cultureHidden').value = culture;
+         document.getElementById('cultureForm').submit();
+     }
+ </script>  
+
+<text>
+    @using (Html.BeginForm("SetCulture", "Home", FormMethod.Post, new { id = "cultureForm" }))
+    {
+        @Html.Hidden("culture", null, new { id="_cultureHidden" })
+        @Html.Hidden("returnUrl", Request.Url.AbsoluteUri)
+
+        string ruStyle = ViewBag.Culture == "ru" ? "current" : null;
+        string enStyle = ViewBag.Culture == "en" ? "current" : null;
+        
+        <a class="culture_link @ruStyle" href="javascript:SendCulture('ru')">ru</a>
+        <a class="culture_link @enStyle" href="javascript:SendCulture('en')">en</a>
+    }
+</text>
+<br />

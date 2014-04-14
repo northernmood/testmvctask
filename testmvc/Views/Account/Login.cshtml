@@ -1,0 +1,18 @@
+﻿@model testmvc.Models.LoginUserViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@Html.ValidationSummary(true)
+
+@using(Html.BeginForm("login", "account", FormMethod.Post))
+{ 
+    @Html.AntiForgeryToken()
+    @Html.LabelFor(x => x.LoginName) @Html.TextBoxFor(m => m.LoginName) @Html.ValidationMessageFor(x => x.LoginName) <br/>
+    @Html.LabelFor(x => x.Password) @Html.PasswordFor(m => m.Password) @Html.ValidationMessageFor(x => x.Password) <br/>
+    @Html.CheckBoxFor(x => x.RememberMe) @Html.LabelFor(x => x.RememberMe)
+    <input type="submit" value="@Strings.LogIn" />
+}
+
+@Html.ActionLink(Strings.Register, "register", "account")

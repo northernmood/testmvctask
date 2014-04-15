@@ -1,11 +1,10 @@
 ﻿@if (Request.IsAuthenticated)
 {
-    <text>
+    <p class="text-left">
         @Html.ActionLink(User.Identity.Name, "manage", "account", new {id = ""}, null) <text>|</text>
         <a href="javascript:document.getElementById('logoutForm').submit()">@Strings.LogOff</a>
         @using (Html.BeginForm("logoff", "account", FormMethod.Post, new { id = "logoutForm" }))
         {
-            
         }
-    </text>
+    </p>
 }

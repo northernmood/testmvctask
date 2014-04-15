@@ -12,11 +12,11 @@
         @Html.Hidden("culture", null, new { id="_cultureHidden" })
         @Html.Hidden("returnUrl", Request.Url.AbsoluteUri)
 
-        string ruStyle = ViewBag.Culture == "ru" ? "current" : null;
-        string enStyle = ViewBag.Culture == "en" ? "current" : null;
+        string ruStyle = ViewBag.Culture == "en" ? "label label-default" : "label label-primary";
+        string enStyle = ViewBag.Culture == "ru" ? "label label-default" : "label label-primary";
         
-        <a class="culture_link @ruStyle" href="javascript:SendCulture('ru')">ru</a>
-        <a class="culture_link @enStyle" href="javascript:SendCulture('en')">en</a>
+        <a class="@ruStyle" href="javascript:SendCulture('ru')">ru</a>
+        <a class="@enStyle" href="javascript:SendCulture('en')">en</a>
     }
 </text>
 <br />

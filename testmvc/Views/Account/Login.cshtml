@@ -6,13 +6,35 @@
 
 @Html.ValidationSummary(true)
 
-@using(Html.BeginForm("login", "account", FormMethod.Post))
+@using (Html.BeginForm("login", "account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 { 
     @Html.AntiForgeryToken()
-    @Html.LabelFor(x => x.LoginName) @Html.TextBoxFor(m => m.LoginName) @Html.ValidationMessageFor(x => x.LoginName) <br/>
-    @Html.LabelFor(x => x.Password) @Html.PasswordFor(m => m.Password) @Html.ValidationMessageFor(x => x.Password) <br/>
-    @Html.CheckBoxFor(x => x.RememberMe) @Html.LabelFor(x => x.RememberMe)
-    <input type="submit" value="@Strings.LogIn" />
-}
 
-@Html.ActionLink(Strings.Register, "register", "account")
+    <div class="form-group">
+    @Html.LabelFor(x => x.LoginName, new { @class = "col-sm-2 control-label" }) 
+        <div class="col-sm-3">
+            @Html.TextBoxFor(m => m.LoginName, new { @class = "form-control" }) @Html.ValidationMessageFor(x => x.LoginName)
+         </div>
+    </div>
+    
+    <div class="form-group">
+    @Html.LabelFor(x => x.Password, new { @class = "col-sm-2 control-label" }) 
+        <div class="col-sm-3">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" }) @Html.ValidationMessageFor(x => x.Password)
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                @Html.CheckBoxFor(x => x.RememberMe) @Html.LabelFor(x => x.RememberMe)
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <input type="submit" class="btn btn-info btn-sm" value="@Strings.LogIn" /> <text>|</text> @Html.ActionLink(Strings.Register, "register", "account")
+    </div>
+    </div>
+}

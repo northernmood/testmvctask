@@ -3,16 +3,46 @@
 <div>
     @if(Model.DataBaseIsEmpty)
     {
-        <div>@Strings.NoUsersInfo</div>
+        <p class="bg-info">@Strings.NoUsersInfo</p>
     }
-    @using(@Html.BeginForm("register", "account", new AjaxOptions(){HttpMethod = "POST"}))
+    @using(@Html.BeginForm("register", "account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
-        @Html.LabelFor(x => x.LoginName) @Html.TextBoxFor(m => m.LoginName) @Html.ValidationMessageFor(x => x.LoginName) <br/>
-        @Html.LabelFor(x => x.Email) @Html.TextBoxFor(x => x.Email) @Html.ValidationMessageFor(x => x.Email) <br/>
-        @Html.LabelFor(x => x.Password) @Html.PasswordFor(x => x.Password) @Html.ValidationMessageFor((x => x.Password)) <br/>
-        @Html.LabelFor(x => x.PasswordConfirmation) @Html.PasswordFor(x => x.PasswordConfirmation) @Html.ValidationMessageFor(x => x.PasswordConfirmation) <br/>
-        @Html.HiddenFor(x => x.DataBaseIsEmpty)
-        <input type="submit" value="@Strings.Register" /> <text>|</text> @Html.ActionLink(@Strings.LogIn, "login", "account")
+
+        <div class="form-group">
+        @Html.LabelFor(x => x.LoginName, new { @class = "col-sm-3 control-label" }) 
+            <div class="col-sm-3">
+            @Html.TextBoxFor(m => m.LoginName, new { @class = "form-control" }) @Html.ValidationMessageFor(x => x.LoginName)
+                </div>
+            </div>
+        
+         <div class="form-group">
+        @Html.LabelFor(x => x.Email, new { @class = "col-sm-3 control-label" })
+             <div class="col-sm-3"> 
+                 @Html.TextBoxFor(x => x.Email, new { @class = "form-control" }) @Html.ValidationMessageFor(x => x.Email) 
+            </div>
+            </div>
+        
+         <div class="form-group">
+        @Html.LabelFor(x => x.Password, new { @class = "col-sm-3 control-label" })
+              <div class="col-sm-3">
+                   @Html.PasswordFor(x => x.Password, new { @class = "form-control" }) @Html.ValidationMessageFor((x => x.Password)) 
+                   </div>
+            </div>
+        
+        <div class="form-group">
+        @Html.LabelFor(x => x.PasswordConfirmation, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-3"> 
+                 @Html.PasswordFor(x => x.PasswordConfirmation, new { @class = "form-control" }) @Html.ValidationMessageFor(x => x.PasswordConfirmation) <br/>
+                </div>
+            </div>
+        
+                 @Html.HiddenFor(x => x.DataBaseIsEmpty)
+
+         <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-10">
+        <input type="submit" class="btn btn-info btn-sm" value="@Strings.Register" /> <text>|</text> @Html.ActionLink(@Strings.LogIn, "login", "account")
+             </div>
+            </div>
     }
 </div>

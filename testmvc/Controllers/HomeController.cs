@@ -11,13 +11,9 @@ namespace testmvc.Controllers
     [InitializeSimpleMembership]
     public class HomeController : BaseController
     {
+        [Authorize]
         public ActionResult Index()
         {
-            if (!Request.IsAuthenticated)
-            {
-                return RedirectToAction("login", "account");
-            }
-
             UsersContext context = new UsersContext();
 
             UsersListViewModel model = new UsersListViewModel();

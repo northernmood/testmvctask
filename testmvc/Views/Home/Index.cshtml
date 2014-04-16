@@ -4,19 +4,96 @@
     ViewBag.Title = "Index_";
 }
 
+<script type="text/javascript">
+
+    var editingId = null;
+
+    function Edit(id) {
+
+        if (editingId != null)
+            return;
+
+        editingId = id;
+
+        BeginEditing('FirstName', id);
+        BeginEditing('LastName', id);
+        BeginEditing('Email', id);
+        $('#spanNormalMode-' + id).css('display', 'none');
+        $('#spanEditMode-' + id).css('display', 'inline');
+    }
+
+    function Save(id) {
+        $.ajax({
+            type: 'POST',
+            data: {
+                id: id,
+                firstName: $('#inputFirstNameOf-' + id).val(),
+                lastName: $('#inputLastNameOf-' + id).val(),
+                email: $('#inputEmailOf-' + id).val()
+            },
+            url: "account/edit",
+            success: function() {
+                SaveEditing(id);
+            }
+    });
+    }
+
+    function SaveEditing(id) {
+        editingId = null;
+
+        StopEditing('FirstName', id, true);
+        StopEditing('LastName', id, true);
+        StopEditing('Email', id, true);
+
+        $('#spanNormalMode-' + id).css('display', 'inline');
+        $('#spanEditMode-' + id).css('display', 'none');
+    }
+
+    function Cancel(id) {
+        editingId = null;
+
+        StopEditing('FirstName', id, false);
+        StopEditing('LastName', id, false);
+        StopEditing('Email', id, false);
+        $('#spanNormalMode-' + id).css('display', 'inline');
+        $('#spanEditMode-' + id).css('display', 'none');
+    }
+
+    function StopEditing(field, id, copyVals) {
+        var inputName = '#input' + field + 'Of-' + id;
+        var spanName = '#span' + field + 'Of-' + id;
+
+        if (copyVals) {
+            $(spanName).html($(inputName).val());
+        }
+        $(spanName).css('display', 'inline');
+        $(inputName).css('display', 'none');
+    }
+
+    function BeginEditing(field, id) {
+        var inputName = '#input' + field + 'Of-' + id;
+        var spanName = '#span' + field + 'Of-' + id;
+
+        $(inputName).val($(spanName).html());
+        $(spanName).css('display', 'none');
+        $(inputName).css('display', 'inline');
+    }
+
+</script>
+
 <table class="table table-hover table-condensed">
     <thead>
     <tr class="active">
-        <td>
+        <td style="width: 25%">
             <strong>@Strings.FirstName</strong>
         </td>
-        <td>
+        <td style="width: 25%">
             <strong>@Strings.LastName</strong>
         </td>
-        <td>
+        <td style="width: 25%">
             <strong>Email</strong>
         </td>
-        <td>
+        <td style="width: 25%">
 
         </td>
     </tr>
@@ -26,18 +103,24 @@
 {
     <tr>
         <td>
-            @u.FirstName
+            <input type="text" style="display: none" class="form-control" id="inputFirstNameOf-@u.UserId" value=""/>
+            <span id="spanFirstNameOf-@u.UserId">@u.FirstName</span>
         </td>
         <td>
-            @u.LastName
+            <input type="text" style="display: none" class="form-control" id="inputLastNameOf-@u.UserId" value=""/>
+            <span id="spanLastNameOf-@u.UserId">@u.LastName</span>
         </td>
         <td>
-            @u.Email
+            <input type="text" style="display: none" class="form-control" id="inputEmailOf-@u.UserId" value=""/>
+            <span id="spanEmailOf-@u.UserId">@u.Email</span>
         </td>
-        <td>
+        <td style="vertical-align: middle">
             @if(ViewBag.CurrentUserIsAdmin)
             {
-                @Html.ActionLink(Strings.Edit, "manage", "account", new {id = u.UserId}, null)
+                @*Html.ActionLink(Strings.Edit, "manage", "account", new {id = u.UserId}, null)*@
+                <span id="spanNormalMode-@u.UserId"><a href="javascript:void(0);" onClick="Edit('@u.UserId')">@Strings.Edit</a></span>
+                <span id="spanEditMode-@u.UserId" style="display:none"><a class="btn btn-info" href="javascript:void(0);" onClick="Save('@u.UserId')">@Strings.Save</a> | 
+                    <a href="javascript:void(0);" onclick="Cancel('@u.UserId')">@Strings.Cancel</a></span>
             }
         </td>
     </tr>

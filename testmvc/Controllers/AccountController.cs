@@ -41,6 +41,7 @@ namespace testmvc.Controllers
         public ActionResult Register()
         {
             UsersContext context = new UsersContext();
+
             RegisterUserViewModel user = new RegisterUserViewModel();
 
             if (!context.Users.Any())
@@ -138,6 +139,13 @@ namespace testmvc.Controllers
             context.SaveChanges();
 
             return RedirectToAction("index", "home");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public string Edit(int id, string firstName, string lastName, string email)
+        {
+            return "OK";
         }
     }
 }

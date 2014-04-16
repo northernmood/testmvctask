@@ -128,6 +128,26 @@ namespace testmvc.Controllers
                 return Manage(user.UserId);
             }
 
+            SaveUser(user);
+
+            return RedirectToAction("index", "home");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public string Edit(EditUserViewModel user)
+        {
+            if (this.TryValidateModel(user))
+            {
+                SaveUser(user);
+                return "OK";
+            }
+
+            return "NOTOK";
+        }
+
+        private void SaveUser(EditUserViewModel user)
+        {
             UsersContext context = new UsersContext();
 
             UserModel dbUser = context.Users.FirstOrDefault(u => u.UserId == user.UserId);
@@ -137,15 +157,6 @@ namespace testmvc.Controllers
             dbUser.Email = user.Email;
 
             context.SaveChanges();
-
-            return RedirectToAction("index", "home");
-        }
-
-        [HttpPost]
-        [Authorize]
-        public string Edit(int id, string firstName, string lastName, string email)
-        {
-            return "OK";
         }
     }
 }

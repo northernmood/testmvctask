@@ -6,8 +6,10 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using testmvc.Binders;
 using testmvc.Configuration;
 using testmvc.Helpers;
+using testmvc.Models;
 
 namespace testmvc
 {
@@ -16,6 +18,7 @@ namespace testmvc
         protected void Application_Start()
         {
             AutoMapper.Mapper.CreateMap<testmvc.Models.UserModel, testmvc.Models.EditUserViewModel>();
+            ModelBinders.Binders.Add(typeof(EditUserViewModel), new JsonDataBinder<EditUserViewModel>());
 
             AreaRegistration.RegisterAllAreas();
             WebApiConfig.Register(GlobalConfiguration.Configuration);

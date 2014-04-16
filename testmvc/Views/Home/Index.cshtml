@@ -25,12 +25,10 @@
     function Save(id) {
         $.ajax({
             type: 'POST',
-            data: {
-                id: id,
-                firstName: $('#inputFirstNameOf-' + id).val(),
-                lastName: $('#inputLastNameOf-' + id).val(),
-                email: $('#inputEmailOf-' + id).val()
-            },
+            data:  "{'UserId':'" + id + "'," +
+                    "'FirstName':'"+ $('#inputFirstNameOf-' + id).val() +"'," +
+                    "'LastName':'"+ $('#inputLastNameOf-' + id).val() +"'," +
+                    "'Email':'" + $('#inputEmailOf-' + id).val() + "'}",
             url: "account/edit",
             success: function() {
                 SaveEditing(id);

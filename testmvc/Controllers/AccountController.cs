@@ -5,9 +5,14 @@ using testmvc.App_LocalResources;
 using testmvc.Filters;
 using testmvc.Models;
 using WebMatrix.WebData;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace testmvc.Controllers
 {
+    using System.Collections.Generic;
+    using System.Web;
+
     [InitializeSimpleMembership]
     public class AccountController : BaseController
     {
@@ -135,15 +140,24 @@ namespace testmvc.Controllers
 
         [HttpPost]
         [Authorize]
-        public string Edit(EditUserViewModel user)
+        public ActionResult Edit(EditUserViewModel user)
         {
-            if (this.TryValidateModel(user))
+            ValidationContext validationContext = new ValidationContext(user, null, null);
+            List<ValidationResult> validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(user, validationContext, validationResults, true))
             {
-                SaveUser(user);
-                return "OK";
+                var results = validationResults.Select(r => new { Field = r.MemberNames.First(), Message = r.ErrorMessage }).ToArray();
+
+                Response.StatusCode = 400;
+
+                return Json(results);
             }
 
-            return "NOTOK";
+            SaveUser(user);
+            
+            Response.StatusCode = 200;
+
+            return Content("OK");
         }
 
         private void SaveUser(EditUserViewModel user)

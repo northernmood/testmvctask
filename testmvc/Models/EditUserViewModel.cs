@@ -10,6 +10,7 @@ namespace testmvc.Models
         [Display(ResourceType = typeof(Strings), Name = "FirstName")]
         public string FirstName { get; set; }
 
+        [Required]
         [Display(ResourceType = typeof(Strings), Name = "LastName")]
         public string LastName { get; set; }
 

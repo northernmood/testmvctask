@@ -25,19 +25,35 @@
     function Save(id) {
         $.ajax({
             type: 'POST',
-            data:  "{'UserId':'" + id + "'," +
-                    "'FirstName':'"+ $('#inputFirstNameOf-' + id).val() +"'," +
-                    "'LastName':'"+ $('#inputLastNameOf-' + id).val() +"'," +
-                    "'Email':'" + $('#inputEmailOf-' + id).val() + "'}",
+            data: "{'UserId':'" + id + "'," +
+                "'FirstName':'" + $('#inputFirstNameOf-' + id).val() + "'," +
+                "'LastName':'" + $('#inputLastNameOf-' + id).val() + "'," +
+                "'Email':'" + $('#inputEmailOf-' + id).val() + "'}",
             url: "account/edit",
             success: function() {
                 SaveEditing(id);
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                ResetErrorStates(editingId);
+                jqXHR.responseJSON.forEach(function t(f) {
+                    $('#wrapper' + f.Field + 'Of-' + editingId).addClass('has-error');
+                    $('#input' + f.Field + 'Of-' + editingId).tooltip({title : f.Message});
+                });
             }
     });
     }
 
+    function ResetErrorStates(id) {
+        $('#wrapperFirstNameOf-' + id).removeClass('has-error');
+        $('#wrapperLastNameOf-' + id).removeClass('has-error');
+        $('#wrapperEmailOf-' + id).removeClass('has-error');
+        $('#inputFirstNameOf-' + editingId).tooltip('destroy');
+        $('#inputLastNameOf-' + editingId).tooltip('destroy');
+        $('#inputEmailOf-' + editingId).tooltip('destroy');
+    }
+
     function SaveEditing(id) {
-        editingId = null;
 
         StopEditing('FirstName', id, true);
         StopEditing('LastName', id, true);
@@ -45,16 +61,20 @@
 
         $('#spanNormalMode-' + id).css('display', 'inline');
         $('#spanEditMode-' + id).css('display', 'none');
+
+        editingId = null;
     }
 
     function Cancel(id) {
-        editingId = null;
+        ResetErrorStates(id);
 
         StopEditing('FirstName', id, false);
         StopEditing('LastName', id, false);
         StopEditing('Email', id, false);
         $('#spanNormalMode-' + id).css('display', 'inline');
         $('#spanEditMode-' + id).css('display', 'none');
+
+        editingId = null;
     }
 
     function StopEditing(field, id, copyVals) {
@@ -101,15 +121,21 @@
 {
     <tr>
         <td>
-            <input type="text" style="display: none" class="form-control" id="inputFirstNameOf-@u.UserId" value=""/>
+            <div class="" id="wrapperFirstNameOf-@u.UserId">
+                <input type="text" style="display: none" class="form-control" id="inputFirstNameOf-@u.UserId" value="" data-toggle="tooltip" data-placement="top"/>
+            </div>
             <span id="spanFirstNameOf-@u.UserId">@u.FirstName</span>
         </td>
         <td>
-            <input type="text" style="display: none" class="form-control" id="inputLastNameOf-@u.UserId" value=""/>
+            <div class="" id="wrapperLastNameOf-@u.UserId">
+                <input type="text" style="display: none" class="form-control" id="inputLastNameOf-@u.UserId" value="" data-toggle="tooltip" data-placement="top"/>
+            </div>
             <span id="spanLastNameOf-@u.UserId">@u.LastName</span>
         </td>
         <td>
-            <input type="text" style="display: none" class="form-control" id="inputEmailOf-@u.UserId" value=""/>
+            <div class="" id="wrapperEmailOf-@u.UserId">
+                <input type="text" style="display: none" class="form-control" id="inputEmailOf-@u.UserId" value="" data-toggle="tooltip" data-placement="top"/>
+            </div>
             <span id="spanEmailOf-@u.UserId">@u.Email</span>
         </td>
         <td style="vertical-align: middle">

@@ -17,7 +17,9 @@ namespace testmvc
     {
         protected void Application_Start()
         {
-            AutoMapper.Mapper.CreateMap<testmvc.Models.UserModel, testmvc.Models.EditUserViewModel>();
+            log4net.Config.XmlConfigurator.Configure();
+
+            AutoMapper.Mapper.CreateMap<UserModel, EditUserViewModel>();
             ModelBinders.Binders.Add(typeof(EditUserViewModel), new JsonDataBinder<EditUserViewModel>());
 
             AreaRegistration.RegisterAllAreas();

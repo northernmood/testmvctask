@@ -5,14 +5,11 @@ using testmvc.App_LocalResources;
 using testmvc.Filters;
 using testmvc.Models;
 using WebMatrix.WebData;
-using System;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace testmvc.Controllers
 {
-    using System.Collections.Generic;
-    using System.Web;
-
     [InitializeSimpleMembership]
     public class AccountController : BaseController
     {

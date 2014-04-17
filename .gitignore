@@ -2,3 +2,7 @@ packages/
 testmvc/bin/
 testmvc/obj/
 desktop.ini
+testmvc.v11.suo
+testmvc.v12.suo
+testmvc.sln.DotSettings.user
+testmvc/log.txt

@@ -14,15 +14,11 @@ namespace testmvc.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            UsersContext context = new UsersContext();
-
             UsersListViewModel model = new UsersListViewModel();
 
-            var q = from Users in context.Users where Users.LoginName != User.Identity.Name select Users;
-
-            foreach (var u in q)
+            foreach (var user in usersRepository.Get(u => u.LoginName != User.Identity.Name))
             {
-                model.Users.Add(u);
+                model.Users.Add(user);
             }
 
             ViewBag.CurrentUserIsAdmin = GetCurrentUser().IsAdmin;

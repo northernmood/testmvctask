@@ -209,8 +209,13 @@
     <Compile Include="Models\LoginUserViewModel.cs" />
     <Compile Include="Models\RegisterUserViewModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UsersContext.cs" />
     <Compile Include="Models\UsersListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\IUsersRepository.cs" />
+    <Compile Include="Repository\RepositoryBase.cs" />
+    <Compile Include="Repository\UsersRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

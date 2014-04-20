@@ -5,11 +5,19 @@ using testmvc.Configuration;
 using testmvc.Helpers;
 using testmvc.Models;
 using System.Linq;
+using testmvc.Repository;
 
 namespace testmvc.Controllers
 {
     public abstract class BaseController : Controller
     {
+        protected IUsersRepository usersRepository;
+
+        public BaseController()
+        {
+            usersRepository = new UsersRepository(new UsersContext());
+        }
+
         protected override void Initialize(RequestContext requestContext)
         {
             ViewBag.Culture = CultureHelper.GetCurrentCulture(requestContext.HttpContext.Request, Config.DefaultCulture);
@@ -21,11 +29,7 @@ namespace testmvc.Controllers
         {
             if (!Request.IsAuthenticated || User == null) return null;
 
-            UsersContext context = new UsersContext();
-
-            var q = from Users in context.Users where Users.LoginName == User.Identity.Name select Users;
-
-            return q.FirstOrDefault<UserModel>();
+            return usersRepository.Get(x => x.LoginName == User.Identity.Name).FirstOrDefault<UserModel>();
         }
     }
 }

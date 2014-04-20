@@ -7,12 +7,17 @@ using testmvc.Models;
 using WebMatrix.WebData;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using testmvc.Repository;
+using System;
+using log4net;
 
 namespace testmvc.Controllers
 {
     [InitializeSimpleMembership]
     public class AccountController : BaseController
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(AccountController));
+
         [HttpGet]
         [ActionName("login")]
         public ActionResult Login()
@@ -42,11 +47,9 @@ namespace testmvc.Controllers
         [ActionName("register")]
         public ActionResult Register()
         {
-            UsersContext context = new UsersContext();
-
             RegisterUserViewModel user = new RegisterUserViewModel();
 
-            if (!context.Users.Any())
+            if (usersRepository.Count() == 0)
             {
                 user.DataBaseIsEmpty = true;
             }
@@ -63,22 +66,27 @@ namespace testmvc.Controllers
                 return View(user);
             }
 
-            UsersContext context = new UsersContext();
-
             // First user is admin
-            bool isAdmin = !context.Users.Any();
+            bool isAdmin = usersRepository.Count() == 0;
 
-            // TODO transaction?
-            WebSecurity.CreateUserAndAccount(
-                user.LoginName,
-                user.Password,
-                propertyValues: new
-                {
-                    Email = user.Email,
-                    IsAdmin = isAdmin
-                });
+            try
+            {
+                // TODO transaction?
+                WebSecurity.CreateUserAndAccount(
+                    user.LoginName,
+                    user.Password,
+                    propertyValues: new
+                    {
+                        Email = user.Email,
+                        IsAdmin = isAdmin
+                    });
 
-            WebSecurity.Login(user.LoginName, user.Password);
+                WebSecurity.Login(user.LoginName, user.Password);
+            }
+            catch(InvalidOperationException ex)
+            {
+                log.Error(ex);
+            }
 
             return RedirectToAction("index", "home");
         }
@@ -105,11 +113,9 @@ namespace testmvc.Controllers
                 return RedirectToAction("index", "home");
             }
 
-            UsersContext context = new UsersContext();
+            UserModel userById = usersRepository.GetByID(_id);
 
-            var userById = from Users in context.Users where Users.UserId == _id select Users;
-
-            EditUserViewModel user = Mapper.Map<EditUserViewModel>(userById.FirstOrDefault<UserModel>());
+            EditUserViewModel user = Mapper.Map<EditUserViewModel>(userById);
 
             return View(user);
         }
@@ -159,15 +165,13 @@ namespace testmvc.Controllers
 
         private void SaveUser(EditUserViewModel user)
         {
-            UsersContext context = new UsersContext();
-
-            UserModel dbUser = context.Users.FirstOrDefault(u => u.UserId == user.UserId);
+            UserModel dbUser = usersRepository.GetByID(user.UserId);
 
             dbUser.FirstName = user.FirstName;
             dbUser.LastName = user.LastName;
             dbUser.Email = user.Email;
 
-            context.SaveChanges();
+            usersRepository.Save();
         }
     }
 }

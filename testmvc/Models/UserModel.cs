@@ -4,15 +4,6 @@ using System.Data.Entity;
 
 namespace testmvc.Models
 {
-    public class UsersContext : DbContext
-    {
-        public UsersContext() : base("DefaultConnection")
-        {
-        }
-
-        public DbSet<UserModel> Users { get; set; }
-    }
-
     [Table("UserProfile")]
     public class UserModel
     {

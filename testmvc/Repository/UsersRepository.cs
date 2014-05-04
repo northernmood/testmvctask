@@ -9,9 +9,7 @@ namespace testmvc.Repository
 {
     public class UsersRepository : RepositoryBase<UserModel>, IUsersRepository
     {
-        private UsersContext usersContext;
-
-        public UsersRepository() : base(new UsersContext())
+        public UsersRepository() : this(new UsersContext())
         {
 
         }

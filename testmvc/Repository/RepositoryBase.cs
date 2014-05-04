@@ -7,7 +7,7 @@ using System.Web;
 
 namespace testmvc.Repository
 {
-    public abstract class RepositoryBase<T> : IDisposable, IRepository<T> where T : class 
+    public abstract class RepositoryBase<T> : IRepository<T> where T : class 
     {
         protected DbContext context;
         private bool disposed = false;
@@ -17,12 +17,12 @@ namespace testmvc.Repository
             this.context = context;
         }
 
-        public int Count()
+        public virtual int Count()
         {
             return context.Set<T>().Count();
         }
 
-        public IEnumerable<T> Get(System.Linq.Expressions.Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        public virtual IEnumerable<T> Get(System.Linq.Expressions.Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
             IQueryable<T> query = context.Set<T>();
 
@@ -41,23 +41,23 @@ namespace testmvc.Repository
             }
         }
 
-        public T GetByID(object id)
+        public virtual T GetByID(object id)
         {
             return context.Set<T>().Find(id);
         }
 
-        public void Insert(T entry)
+        public virtual void Insert(T entry)
         {
             context.Set<T>().Add(entry);
         }
 
-        public void Delete(object id)
+        public virtual void Delete(object id)
         {
             T entityToDelete = context.Set<T>().Find(id);
             Delete(entityToDelete);
         }
 
-        public void Delete(T entry)
+        public virtual void Delete(T entry)
         {
             if (context.Entry(entry).State == EntityState.Detached)
             {
@@ -67,10 +67,15 @@ namespace testmvc.Repository
             context.Set<T>().Remove(entry);
         }
 
-        public void Update(T entry)
+        public virtual void Update(T entry)
         {
             context.Set<T>().Attach(entry);
             context.Entry(entry).State = EntityState.Modified;
+        }
+
+        public virtual void Save()
+        {
+            context.SaveChanges();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -89,11 +94,6 @@ namespace testmvc.Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public void Save()
-        {
-            context.SaveChanges();
         }
     }
 }

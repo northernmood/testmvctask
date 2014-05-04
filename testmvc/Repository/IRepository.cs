@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace testmvc.Repository
 {
-    public interface IRepository<T> 
+    public interface IRepository<T> : IDisposable
     {
         IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
 

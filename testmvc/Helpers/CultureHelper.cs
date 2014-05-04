@@ -19,19 +19,9 @@ namespace testmvc.Helpers
         {
             string userCulture = defaultCulture;
 
-            HttpCookie cookie = httpRequest.Cookies[CultureCookieName];
-
-            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+            if(httpRequest.RequestContext.RouteData.Values["lang"] != null)
             {
-                userCulture = cookie.Value;
-            }
-            else
-            {
-                try
-                {
-                    userCulture = httpRequest.UserLanguages[0].Substring(0, 2);
-                }
-                catch { }
+                userCulture = httpRequest.RequestContext.RouteData.Values["lang"] as string;
             }
 
             return userCulture;

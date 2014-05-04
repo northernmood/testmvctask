@@ -19,7 +19,12 @@ namespace testmvc.Binders
             {
                 return serializer.Deserialize<T>(decoded);
             }
-            catch (InvalidOperationException ex)
+            catch (ArgumentException ex)
+            {
+                DefaultModelBinder b = new DefaultModelBinder();
+                return b.BindModel(controllerContext, bindingContext);
+            }
+            catch(Exception ex)
             {
                 log.Error(ex);
                 return default(T);

@@ -1,0 +1,14 @@
+﻿@model testmvc.Models.UserModel
+
+@using (Ajax.BeginForm("edit", "account", new AjaxOptions { HttpMethod = "POST", OnSuccess = String.Format("_success({0})", Model.UserId) }))
+{
+    @Html.HiddenFor(t => t.UserId) 
+    @Html.TextBoxFor(t => t.FirstName) @Html.ValidationMessageFor(t => t.FirstName)
+    @Html.TextBoxFor(t => t.LastName) @Html.ValidationMessageFor(t => t.LastName)
+    @Html.TextBoxFor(t => t.Email) @Html.ValidationMessageFor(t => t.Email)
+    //<input type="hidden" name="UserId" value="@u.UserId" />
+    //<input type="text" name="FirstName" id="f_fname-@u.UserId" value="@u.FirstName" />
+    //<input type="text" name="LastName" id="f_lname-@u.UserId" value="@u.LastName" />
+    //<input type="text" name="Email" id="f_email-@u.UserId" value="@u.Email" />
+    <input type="submit" />
+}

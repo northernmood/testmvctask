@@ -25,10 +25,10 @@
     function Save(id) {
         $.ajax({
             type: 'POST',
-            data: "{'UserId':'" + id + "'," +
-                "'FirstName':'" + $('#inputFirstNameOf-' + id).val() + "'," +
-                "'LastName':'" + $('#inputLastNameOf-' + id).val() + "'," +
-                "'Email':'" + $('#inputEmailOf-' + id).val() + "'}",
+            data: {UserId: id,
+                FirstName: $('#inputFirstNameOf-' + id).val(),
+                LastName: $('#inputLastNameOf-' + id).val(),
+                Email: $('#inputEmailOf-' + id).val()},
             url: "account/edit",
             success: function() {
                 SaveEditing(id);
@@ -96,7 +96,6 @@
         $(spanName).css('display', 'none');
         $(inputName).css('display', 'inline');
     }
-
 </script>
 
 <table class="table table-hover table-condensed">
@@ -151,3 +150,48 @@
 }
         </tbody>
 </table>
+
+<br/>
+<h4>Наброски другого подхода с использованием дивной верстки и Ajax.BeginForm.</h4>
+@foreach (UserModel u in Model.Users)
+{
+    <div id="container-@u.UserId">
+            <div id="static-@u.UserId">
+                <span id="fname-@u.UserId">@u.FirstName</span>
+                <span id="lname-@u.UserId">@u.LastName</span>
+                <span id="email-@u.UserId">@u.Email</span>
+                <a href="#" onclick="_edit(@u.UserId)">Edit</a>
+            </div>
+
+            <div id="form-@u.UserId" style="display:none">
+                @using (Ajax.BeginForm("edit", "account", new AjaxOptions { HttpMethod = "POST", OnSuccess = String.Format("_success({0})", u.UserId) }))
+                {
+                    <input type="hidden" name="UserId" value="@u.UserId" />
+                    <input type="text" name="FirstName" id="f_fname-@u.UserId" value="@u.FirstName" />
+                    <input type="text" name="LastName" id="f_lname-@u.UserId" value="@u.LastName" />
+                    <input type="text" name="Email" id="f_email-@u.UserId" value="@u.Email" />
+                    <input type="submit" />
+                }
+            </div>
+
+        
+    </div>
+}
+
+
+<script>
+    function _success(id) {
+        
+        $('#fname-'+id).text($('#f_fname-'+id).val());
+        $('#lname-'+id).text($('#f_lname-'+id).val());
+        $('#email-'+id).text($('#f_email-'+id).val());
+
+        $('#form-'+id).hide();
+        $('#static-'+id).show();
+    }
+
+    function _edit(id){
+        $('#static-'+id).hide();
+        $('#form-'+id).show();
+    }
+</script>

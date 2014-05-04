@@ -20,7 +20,6 @@ namespace testmvc
             log4net.Config.XmlConfigurator.Configure();
 
             AutoMapper.Mapper.CreateMap<UserModel, EditUserViewModel>();
-            ModelBinders.Binders.Add(typeof(EditUserViewModel), new JsonDataBinder<EditUserViewModel>());
 
             AreaRegistration.RegisterAllAreas();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -32,7 +31,7 @@ namespace testmvc
         protected void Application_AcquireRequestState(object sender, EventArgs e)
         {
             HttpRequestWrapper wr = new HttpRequestWrapper(Request);
-            string userCulture = CultureHelper.GetCurrentCulture(wr, Config.DefaultCulture);
+            string userCulture = CultureHelper.GetCurrentCulture(wr, Settings.DefaultCulture);
 
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(userCulture);
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(userCulture);

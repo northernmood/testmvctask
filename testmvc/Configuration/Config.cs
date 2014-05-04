@@ -2,7 +2,7 @@
 {
     using System.Configuration;
 
-    public static class Config
+    public static class Settings
     {
         public static string DefaultCulture
         {

@@ -143,13 +143,13 @@ namespace testmvc.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Edit(EditUserViewModel user)
+        public JsonResult Edit(EditUserViewModel user)
         {
-            ValidationContext validationContext = new ValidationContext(user, null, null);
-            List<ValidationResult> validationResults = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(user, validationContext, validationResults, true))
+            if(!ModelState.IsValid)
             {
-                var results = validationResults.Select(r => new { Field = r.MemberNames.First(), Message = r.ErrorMessage }).ToArray();
+                var results = ModelState
+                    .Where(m => m.Value.Errors.Count > 0)
+                    .Select(m => new { Field = m.Key, Message = m.Value.Errors[0].ErrorMessage }).ToArray();
 
                 Response.StatusCode = 400;
 
@@ -160,7 +160,7 @@ namespace testmvc.Controllers
             
             Response.StatusCode = 200;
 
-            return Content("OK");
+            return Json("OK");
         }
 
         private void SaveUser(EditUserViewModel user)

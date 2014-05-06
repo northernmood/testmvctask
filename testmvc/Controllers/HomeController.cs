@@ -1,14 +1,10 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using testmvc.Filters;
+﻿using System.Web.Mvc;
 using testmvc.Models;
+using testmvc.Helpers;
+using WebMatrix.WebData;
 
 namespace testmvc.Controllers
 {
-    using AutoMapper;
-    using testmvc.Helpers;
-
-    [InitializeSimpleMembership]
     public class HomeController : BaseController
     {
         [Authorize]
@@ -16,7 +12,7 @@ namespace testmvc.Controllers
         {
             UsersListViewModel model = new UsersListViewModel();
 
-            foreach (var user in usersRepository.Get(u => u.LoginName != User.Identity.Name))
+            foreach (var user in usersRepository.Get(u => u.UserId != WebSecurity.CurrentUserId))
             {
                 model.Users.Add(user);
             }

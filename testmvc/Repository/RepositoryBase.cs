@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
+using System.Linq.Expressions;
 
 namespace testmvc.Repository
 {
@@ -12,7 +12,7 @@ namespace testmvc.Repository
         protected DbContext context;
         private bool disposed = false;
 
-        public RepositoryBase(DbContext context)
+        protected RepositoryBase(DbContext context)
         {
             this.context = context;
         }
@@ -22,7 +22,7 @@ namespace testmvc.Repository
             return context.Set<T>().Count();
         }
 
-        public virtual IEnumerable<T> Get(System.Linq.Expressions.Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        public virtual IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
             IQueryable<T> query = context.Set<T>();
 
@@ -35,10 +35,8 @@ namespace testmvc.Repository
             {
                 return orderBy(query).ToList();
             }
-            else
-            {
-                return query.ToList();
-            }
+
+            return query.ToList();
         }
 
         public virtual T GetByID(object id)

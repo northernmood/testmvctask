@@ -2,21 +2,25 @@
 using System.Linq;
 using System.Web.Mvc;
 using testmvc.App_LocalResources;
-using testmvc.Filters;
 using testmvc.Models;
 using WebMatrix.WebData;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
 using testmvc.Repository;
 using System;
 using log4net;
 
 namespace testmvc.Controllers
 {
-    [InitializeSimpleMembership]
     public class AccountController : BaseController
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(AccountController));
+
+        public AccountController() : this(new UsersRepository())
+        {
+        }
+
+        public AccountController(IUsersRepository repository) : base(repository)
+        {
+        }
 
         [HttpGet]
         [ActionName("login")]

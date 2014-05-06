@@ -1,14 +1,15 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 using testmvc.Configuration;
+using testmvc.Filters;
 using testmvc.Helpers;
 using testmvc.Models;
-using System.Linq;
 using testmvc.Repository;
+using WebMatrix.WebData;
 
 namespace testmvc.Controllers
 {
+    [InitializeSimpleMembership]
     public abstract class BaseController : Controller
     {
         protected readonly IUsersRepository usersRepository;
@@ -30,11 +31,10 @@ namespace testmvc.Controllers
             base.Initialize(requestContext);
         }
 
+        [Authorize]
         protected UserModel GetCurrentUser()
         {
-            if (!Request.IsAuthenticated || User == null) return null;
-
-            return usersRepository.Get(x => x.LoginName == User.Identity.Name).FirstOrDefault<UserModel>();
+            return usersRepository.GetByID(WebSecurity.CurrentUserId);
         }
 
         protected override void Dispose(bool disposing)

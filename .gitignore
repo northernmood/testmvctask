@@ -1,6 +1,8 @@
 packages/
 testmvc/bin/
 testmvc/obj/
+UnitTesting/bin/
+UnitTesting/obj/
 desktop.ini
 testmvc.v11.suo
 testmvc.v12.suo

@@ -1,18 +1,29 @@
 ﻿using System.Web.Mvc;
 using testmvc.Models;
 using testmvc.Helpers;
-using WebMatrix.WebData;
+using testmvc.Repository;
+using testmvc.WebSecurityImpl;
+using System.Linq;
 
 namespace testmvc.Controllers
 {
     public class HomeController : BaseController
     {
+        public HomeController() : this(new UsersRepository(), new WebSecurityWrapper())
+        {
+        }
+
+        public HomeController(IUsersRepository repository, IWebSecurityWrapper webSecurity)
+            : base(repository, webSecurity)
+        {
+        }
+
         [Authorize]
         public ActionResult Index()
         {
             UsersListViewModel model = new UsersListViewModel();
 
-            foreach (var user in usersRepository.Get(u => u.UserId != WebSecurity.CurrentUserId))
+            foreach (var user in usersRepository.All().Where(u => u.UserId != WebSecurity.CurrentUserId))
             {
                 model.Users.Add(user);
             }

@@ -220,6 +220,8 @@
     <Compile Include="Repository\IUsersRepository.cs" />
     <Compile Include="Repository\RepositoryBase.cs" />
     <Compile Include="Repository\UsersRepository.cs" />
+    <Compile Include="WebSecurityImpl\IWebSecurityWrapper.cs" />
+    <Compile Include="WebSecurityImpl\WebSecurityWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -316,6 +318,7 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\switcher.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

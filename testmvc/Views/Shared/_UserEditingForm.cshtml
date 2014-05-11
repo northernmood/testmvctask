@@ -1,14 +1,19 @@
 ﻿@model testmvc.Models.UserModel
+<div>
+    <div id="static-@Model.UserId">
+        <span id="fname-@Model.UserId" class="itext">@Model.FirstName</span>
+        <span id="lname-@Model.UserId" class="itext">@Model.LastName</span>
+        <span id="email-@Model.UserId" class="itext">@Model.Email</span>
+        <a href="#" onclick="switcher.beginEdit(@Model.UserId)">@Strings.Edit</a>
+    </div>
 
-@using (Ajax.BeginForm("edit", "account", new AjaxOptions { HttpMethod = "POST", OnSuccess = String.Format("_success({0})", Model.UserId) }))
-{
-    @Html.HiddenFor(t => t.UserId) 
-    @Html.TextBoxFor(t => t.FirstName) @Html.ValidationMessageFor(t => t.FirstName)
-    @Html.TextBoxFor(t => t.LastName) @Html.ValidationMessageFor(t => t.LastName)
-    @Html.TextBoxFor(t => t.Email) @Html.ValidationMessageFor(t => t.Email)
-    //<input type="hidden" name="UserId" value="@u.UserId" />
-    //<input type="text" name="FirstName" id="f_fname-@u.UserId" value="@u.FirstName" />
-    //<input type="text" name="LastName" id="f_lname-@u.UserId" value="@u.LastName" />
-    //<input type="text" name="Email" id="f_email-@u.UserId" value="@u.Email" />
-    <input type="submit" />
-}
+        @using (Ajax.BeginForm("edit", "account", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = String.Format("switcher.endEdit({0}, true)", Model.UserId) }, new { id = "form-" + Model.UserId, style="display:none" }))
+        {
+            @Html.HiddenFor(t => t.UserId)
+            @Html.TextBoxFor(t => t.FirstName, new { id = "f_fname-" + Model.UserId, @class = "iinput" }) @Html.ValidationMessageFor(t => t.FirstName)
+            @Html.TextBoxFor(t => t.LastName, new { id = "f_lname-" + Model.UserId, @class = "iinput" }) @Html.ValidationMessageFor(t => t.LastName)
+            @Html.TextBoxFor(t => t.Email, new { id = "f_email-" + Model.UserId, @class = "iinput" }) @Html.ValidationMessageFor(t => t.Email)
+            <input type="submit" /> <text>|</text> <a href="#" onclick="@String.Format("switcher.endEdit({0}, false)", Model.UserId)">@Strings.Cancel</a>
+        }
+</div>
+

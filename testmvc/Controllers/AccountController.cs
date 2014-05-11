@@ -3,22 +3,24 @@ using System.Linq;
 using System.Web.Mvc;
 using testmvc.App_LocalResources;
 using testmvc.Models;
-using WebMatrix.WebData;
 using testmvc.Repository;
 using System;
 using log4net;
+using testmvc.WebSecurityImpl;
 
 namespace testmvc.Controllers
 {
     public class AccountController : BaseController
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(AccountController));
+        
 
-        public AccountController() : this(new UsersRepository())
+        public AccountController() : this(new UsersRepository(), new WebSecurityWrapper())
         {
         }
 
-        public AccountController(IUsersRepository repository) : base(repository)
+        public AccountController(IUsersRepository repository, IWebSecurityWrapper webSecurity)
+            : base(repository, webSecurity)
         {
         }
 
@@ -75,7 +77,6 @@ namespace testmvc.Controllers
 
             try
             {
-                // TODO transaction?
                 WebSecurity.CreateUserAndAccount(
                     user.LoginName,
                     user.Password,
@@ -147,13 +148,15 @@ namespace testmvc.Controllers
 
         [HttpPost]
         [Authorize]
-        public JsonResult Edit(EditUserViewModel user)
+        public ActionResult Edit(EditUserViewModel user)
         {
             if(!ModelState.IsValid)
             {
                 var results = ModelState
                     .Where(m => m.Value.Errors.Count > 0)
                     .Select(m => new { Field = m.Key, Message = m.Value.Errors[0].ErrorMessage }).ToArray();
+
+                //ModelState.AddModelError("", "error message");
 
                 Response.StatusCode = 400;
 

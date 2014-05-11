@@ -5,6 +5,7 @@ using testmvc.Filters;
 using testmvc.Helpers;
 using testmvc.Models;
 using testmvc.Repository;
+using testmvc.WebSecurityImpl;
 using WebMatrix.WebData;
 
 namespace testmvc.Controllers
@@ -13,15 +14,17 @@ namespace testmvc.Controllers
     public abstract class BaseController : Controller
     {
         protected readonly IUsersRepository usersRepository;
+        protected IWebSecurityWrapper WebSecurity;
 
         public BaseController()
         {
             usersRepository = new UsersRepository();
         }
 
-        public BaseController(IUsersRepository repository)
+        public BaseController(IUsersRepository repository, IWebSecurityWrapper webSecurity)
         {
             usersRepository = repository;
+            WebSecurity = webSecurity;
         }
 
         protected override void Initialize(RequestContext requestContext)

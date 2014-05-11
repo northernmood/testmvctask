@@ -9,6 +9,8 @@ namespace testmvc.Repository
     {
         IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
 
+        IQueryable<T> All();
+
         T GetByID(object id);
 
         void Insert(T entry);

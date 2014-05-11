@@ -93,5 +93,11 @@ namespace testmvc.Repository
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+
+        public IQueryable<T> All()
+        {
+            return context.Set<T>();
+        }
     }
 }

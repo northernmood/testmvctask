@@ -1,0 +1,21 @@
+﻿@model testmvc.Models.UsersListViewModel
+
+<a href="#" onclick="loadContent('FirstName', 0)">По имени</a>
+<a href="#" onclick="loadContent('FirstName_desc', 0)">По имени деск</a>
+<a href="#" onclick="loadContent('LastName', 0)">По фамилии</a>
+<a href="#" onclick="loadContent('LastName_desc', 0)">По фамилии деск</a>
+<a href="#" onclick="loadContent('Email', 0)">По имейлу</a>
+<a href="#" onclick="loadContent('Email_desc', 0)">По имейлу</a>
+
+<input type="text" id="filter" value="@ViewBag.Filter"/><button onclick="loadContent('@ViewBag.OrderBy', 0)">Find</button>
+
+
+@foreach (UserModel u in Model.Users)
+{
+    @Html.Partial("_UserEditingForm", u)
+}
+
+@for (int i = 0; i < ViewBag.TotalPages; i++)
+{
+    <a href="#" onclick="loadContent('@ViewBag.OrderBy', @i)">@(i + 1)</a>
+}

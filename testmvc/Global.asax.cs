@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Autofac;
+using Autofac.Integration.Mvc;
+using Autofac.Integration.WebApi;
+using System;
 using System.Globalization;
 using System.Threading;
 using System.Web;
@@ -6,9 +9,11 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using testmvc.App_Start;
 using testmvc.Configuration;
 using testmvc.Helpers;
 using testmvc.Models;
+using testmvc.Repository;
 
 namespace testmvc
 {
@@ -19,6 +24,10 @@ namespace testmvc
             log4net.Config.XmlConfigurator.Configure();
 
             AutoMapper.Mapper.CreateMap<UserModel, EditUserViewModel>();
+
+            IContainer container = DependenciesInitializer.RegisterDependencies();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
 
             AreaRegistration.RegisterAllAreas();
             WebApiConfig.Register(GlobalConfiguration.Configuration);

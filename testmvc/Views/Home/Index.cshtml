@@ -4,10 +4,26 @@
     ViewBag.Title = "Index_";
 }
 
+<script>
+    $(document).ready(function () {
+        loadContent(null, 0);
+    });
 
-@foreach (UserModel u in Model.Users)
-{
-    @Html.Partial("_UserEditingForm", u)
-}
+    function loadContent(order, page) {
+        $.ajax({
+            url: "Home/GetUsersFiltered",
+            data: { filter: $('#filter').val(), orderBy: order, page: page },
+            success: function (data, status, xhr) {
+                $('#content').html(data);
+            }
+            });
+    };
+</script>
+
+<!--Html.Partial("_UsersList", Model)-->
+
+<div id="content">
+
+</div>
 
 <script type="text/javascript" src="Scripts/switcher.js"></script>

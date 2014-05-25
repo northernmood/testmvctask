@@ -97,7 +97,7 @@ namespace testmvc.Repository
 
         public IQueryable<T> All()
         {
-            return context.Set<T>();
+            return context.Set<T>().AsQueryable<T>();
         }
     }
 }

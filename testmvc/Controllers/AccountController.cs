@@ -13,11 +13,6 @@ namespace testmvc.Controllers
     public class AccountController : BaseController
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(AccountController));
-        
-
-        public AccountController() : this(new UsersRepository(), new WebSecurityWrapper())
-        {
-        }
 
         public AccountController(IUsersRepository repository, IWebSecurityWrapper webSecurity)
             : base(repository, webSecurity)

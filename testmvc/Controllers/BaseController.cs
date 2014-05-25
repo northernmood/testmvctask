@@ -13,13 +13,8 @@ namespace testmvc.Controllers
     [InitializeSimpleMembership]
     public abstract class BaseController : Controller
     {
-        protected readonly IUsersRepository usersRepository;
-        protected IWebSecurityWrapper WebSecurity;
-
-        public BaseController()
-        {
-            usersRepository = new UsersRepository();
-        }
+        public IUsersRepository usersRepository { get; set; }
+        public IWebSecurityWrapper WebSecurity { get; set; }
 
         public BaseController(IUsersRepository repository, IWebSecurityWrapper webSecurity)
         {

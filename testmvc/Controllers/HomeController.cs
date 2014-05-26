@@ -53,6 +53,7 @@ namespace testmvc.Controllers
             }
 
             List<UserModel> list;
+            int total = query.Count();
             if (orderBy.EndsWith("_desc")) list = query.OrderByDescending(func).Skip(pageSize * page).Take(pageSize).ToList();
             else list = query.OrderBy(func).Skip(pageSize * page).Take(pageSize).ToList();
 
@@ -61,7 +62,7 @@ namespace testmvc.Controllers
             ViewBag.Filter = filter;
             ViewBag.OrderBy = orderBy;
             ViewBag.Page = page;
-            ViewBag.TotalPages = usersRepository.Count() / pageSize;
+            ViewBag.TotalPages = total / pageSize;
 
             return PartialView("_UsersList", model);
         }

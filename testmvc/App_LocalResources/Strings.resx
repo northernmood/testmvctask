@@ -180,4 +180,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="ByEmail" xml:space="preserve">
+    <value>По email</value>
+  </data>
+  <data name="ByFirstName" xml:space="preserve">
+    <value>По имени</value>
+  </data>
+  <data name="ByLastName" xml:space="preserve">
+    <value>По фамилии</value>
+  </data>
 </root>

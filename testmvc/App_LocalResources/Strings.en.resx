@@ -180,4 +180,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ByEmail" xml:space="preserve">
+    <value>By email</value>
+  </data>
+  <data name="ByFirstName" xml:space="preserve">
+    <value>By first name</value>
+  </data>
+  <data name="ByLastName" xml:space="preserve">
+    <value>By last name</value>
+  </data>
 </root>

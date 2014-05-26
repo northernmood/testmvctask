@@ -5,13 +5,15 @@
 }
 
 <script>
+    // Да, знаю, надо вынести во внешний скрипт
+
     $(document).ready(function () {
         loadContent(null, 0);
     });
 
     function loadContent(order, page) {
         $.ajax({
-            url: "Home/GetUsersFiltered",
+            url: "@ViewBag.Culture/Home/GetUsersFiltered",
             data: { filter: $('#filter').val(), orderBy: order, page: page },
             success: function (data, status, xhr) {
                 $('#content').html(data);
@@ -19,8 +21,6 @@
             });
     };
 </script>
-
-<!--Html.Partial("_UsersList", Model)-->
 
 <div id="content">
 

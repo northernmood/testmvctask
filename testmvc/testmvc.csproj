@@ -221,6 +221,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CultureHelper.cs" />
+    <Compile Include="Helpers\OrderingLinkExtension.cs" />
     <Compile Include="Models\EditUserViewModel.cs" />
     <Compile Include="Models\LoginUserViewModel.cs" />
     <Compile Include="Models\RegisterUserViewModel.cs" />

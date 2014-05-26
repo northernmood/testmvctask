@@ -26,7 +26,7 @@ namespace testmvc.Api
         }
 
         // PUT api/users/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, UserModel user)
         {
         }
     }

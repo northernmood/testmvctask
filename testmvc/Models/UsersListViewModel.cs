@@ -12,6 +12,11 @@ namespace testmvc.Models
             Users = new List<UserModel>();
         }
 
+        public UsersListViewModel(IEnumerable<UserModel> list)
+        {
+            Users = new List<UserModel>(list);
+        }
+
         public List<UserModel> Users { get; set; }
     }
 }

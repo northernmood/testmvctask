@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using System;
 using System.Collections.Generic;
+using System.Web.UI;
 
 namespace testmvc.Controllers
 {
@@ -21,50 +22,44 @@ namespace testmvc.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            UsersListViewModel model = new UsersListViewModel();
-
-            foreach (var user in usersRepository.All().Where(u => u.UserId != WebSecurity.CurrentUserId))
-            {
-                model.Users.Add(user);
-            }
-
             ViewBag.CurrentUserIsAdmin = GetCurrentUser().IsAdmin;
 
-            return View(model);
+            return View();
         }
 
 
         [Authorize]
+        [OutputCache(Location = OutputCacheLocation.Server, Duration = 60, SqlDependency = "Default:UserProfile", VaryByParam="*")]
         public ActionResult GetUsersFiltered(string filter, string orderBy = "UserId", int page = 0, int pageSize = 2)
         {
-            if (pageSize == 0) pageSize = 2;
+            if (pageSize <= 0) pageSize = 2;
             if (string.IsNullOrEmpty(orderBy)) orderBy = "UserId";
-
-            UsersListViewModel model = new UsersListViewModel();
 
             IQueryable<UserModel> query = usersRepository.All().Where(u => u.UserId != WebSecurity.CurrentUserId);
 
             PropertyInfo p = typeof(UserModel).GetProperty(orderBy.Replace("_desc", ""));
-            Func<UserModel, object> func = u => p.GetValue(u);
+            Func<UserModel, object> filt = u => p.GetValue(u);
+            
+            Func<IQueryable<UserModel>, IOrderedEnumerable<UserModel>> orderer = q => orderBy.EndsWith("_desc")
+                ? q.OrderByDescending(filt)
+                : q.OrderBy(filt);
 
             if (!string.IsNullOrEmpty(filter))
             {
-                query = query.Where(u => u.FirstName.IndexOf(filter) >= 0 || u.LastName.IndexOf(filter) >= 0);
+                query = query.Where(u => 
+                       u.FirstName.IndexOf(filter) >= 0 
+                    || u.LastName.IndexOf(filter) >= 0
+                    || u.Email.IndexOf(filter) >= 0);
             }
 
-            List<UserModel> list;
-            int total = query.Count();
-            if (orderBy.EndsWith("_desc")) list = query.OrderByDescending(func).Skip(pageSize * page).Take(pageSize).ToList();
-            else list = query.OrderBy(func).Skip(pageSize * page).Take(pageSize).ToList();
-
-            model.Users.AddRange(list);
+            List<UserModel> list = orderer(query).Skip(pageSize * page).Take(pageSize).ToList();
 
             ViewBag.Filter = filter;
             ViewBag.OrderBy = orderBy;
             ViewBag.Page = page;
-            ViewBag.TotalPages = total / pageSize;
+            ViewBag.TotalPages = query.Count() / pageSize;
 
-            return PartialView("_UsersList", model);
+            return PartialView("_UsersList", new UsersListViewModel(list));
         }
 
 

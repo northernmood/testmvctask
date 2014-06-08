@@ -141,7 +141,7 @@ namespace testmvc.Controllers
             return RedirectToAction("index", "home");
         }
 
-        [HttpPost]
+
         [Authorize]
         public ActionResult Edit(EditUserViewModel user)
         {

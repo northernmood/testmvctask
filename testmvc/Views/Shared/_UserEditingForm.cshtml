@@ -8,7 +8,7 @@
     </div>
 
         <!--using (Ajax.BeginForm("users", "api", new { id = Model.UserId }, new AjaxOptions { HttpMethod = "PUT", OnSuccess = String.Format("switcher.endEdit({0}, true)", Model.UserId) }, new { id = "form-" + Model.UserId, style = "display:none" }))-->
-        @using(Ajax.BeginForm(null, null, new AjaxOptions { Url = "api/users/" + Model.UserId, OnSuccess = String.Format("switcher.endEdit({0}, true)", Model.UserId) }, new { id = "form-" + Model.UserId, style = "display:none" }))
+        @using(Ajax.BeginForm("Edit", "Account", null, new AjaxOptions {HttpMethod="POST", OnSuccess = String.Format("switcher.endEdit({0}, true)", Model.UserId) }, new { id = "form-" + Model.UserId, style = "display:none" }))
         {
             @Html.HttpMethodOverride(HttpVerbs.Put)
             @Html.HiddenFor(t => t.UserId)

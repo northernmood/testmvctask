@@ -2,9 +2,11 @@
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using System;
+using System.Configuration;
 using System.Globalization;
 using System.Threading;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -34,6 +36,10 @@ namespace testmvc
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            string cs = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            SqlCacheDependencyAdmin.EnableNotifications(cs);
+            SqlCacheDependencyAdmin.EnableTableForNotifications(cs, "UserProfile");
         }
 
         protected void Application_AcquireRequestState(object sender, EventArgs e)

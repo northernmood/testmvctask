@@ -1,11 +1,12 @@
-﻿@model testmvc.Models.UsersListViewModel
-
-@{
+﻿@{
     ViewBag.Title = "Index_";
 }
 
+@section scripts{
+    <script type="text/javascript" src="Scripts/switcher.js"></script>
+}
+
 <script>
-    // Да, знаю, надо вынести во внешний скрипт
 
     $(document).ready(function () {
         loadContent(null, 0);
@@ -26,4 +27,3 @@
 
 </div>
 
-<script type="text/javascript" src="Scripts/switcher.js"></script>
